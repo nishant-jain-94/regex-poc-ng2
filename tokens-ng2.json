@@ -1,0 +1,42 @@
+{
+	"@Component": {
+		"type": "Component Decorator",
+		"push": "Component Decorator",
+		"supportsBlock": "true"
+	},
+	"@Injectable":{
+		"type": "Component Service",
+		"push": "ComponentService",
+		"supportsBlock": "false"
+	},
+	"\\(\\{": {
+		"type": "startblock",
+		"push": "start of block"
+	},
+	"\\)\\}": {
+		"type": "endblock",
+		"push" : "end of block",
+		"supportsBlock": "false"
+	},
+	"template:": {
+		"type": "Component Template",
+		"push": "start of template",
+		"supportsBlock": "false"
+	},
+	"templateUrl:":{
+		"type": "Component Template Url",
+		"push": "start of template",
+		"supportsBlock": "false"
+	},
+	"\\`": {
+		"type": "Component Template Encloser",
+		"push": "templateencloser",
+		"supportsBlock": false
+	},
+	"export class": {
+		"type": "Component Class",
+		"push": "angularclass",
+		"supportsBlock": false
+	}
+}
+
