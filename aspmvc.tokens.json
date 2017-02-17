@@ -1,0 +1,11 @@
+{
+	"public\\s*class\\s*(.*)\\s*:\\s*Controller": {
+		"type": "Controller"
+	},
+	"namespace\\s*(.*)\\.Models": {
+		"type": "Model"
+	},
+	"public\\s*class\\s*(.*?)\\s*:\\s*DbContext": {
+		"type": "DbContext"
+	}
+}

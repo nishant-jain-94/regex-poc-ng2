@@ -1,0 +1,19 @@
+{
+	// A custom name for the check
+	"Check if module has first argument as a String": {
+		"callee": {
+			"object": "angular",
+			"property": "module"
+		},
+		"arguments": {
+			"0": {
+				"typeof": "Literal",
+				"value": "myApp"
+			},
+			"1": {
+				"typeof": "Array"
+			}
+		}
+	},
+	
+}

@@ -1,20 +1,19 @@
 const highland = require('highland');
-const tokens = require('./tokens-ng2.json');
 var stackOfReg = {};
 var tree = "";
 var fs = require('fs');
 var readLine = require('readline');
 var glob = require('glob-array');
-var checker = require('./checker.json');
 var commandLineArgs = require('command-line-args');
 var _ = require('underscore');
 var optionDefinitions = [
-	{
-		name: 'src', type: String
-	}	
+	{ name: 'src', type: String },
+	{ name: 'token', type: String },
+	{ name: 'rule', type: String }
 ];
-
 var arguments = commandLineArgs(optionDefinitions);
+var checker = require('./'+arguments.rule);
+var tokens = require('./'+arguments.token);
 var recursive = require('recursive-readdir');
 
 function sortByIndex(a, b) {
@@ -50,7 +49,6 @@ function buildTree(extractedTokens) {
 			}
 		});
 		this.stack = this.stack.concat(extractedTokens);
-		
 }	
 
 function parseTree() {
@@ -68,28 +66,25 @@ function parseTree() {
 	return parseObj
 }
 
-
-// console.log(glob);
-var files = glob.sync([arguments.src+'/**/*.component.ts', arguments.src+'/**/*-service.ts']);
-	var promises = [];
-	files.forEach(function(file) {
-		var promise = new Promise(function(resolve, reject) {
-			var data = fs.readFileSync(file);
-			var lines = data.toString().split('\n');
-			this.stack = [];
-			highland(lines)
-				.map(extractToken)
-				.each(buildTree.bind(this))
-				.done(function(){
-					var parsedObj = parseTree(this.stack);
-					// parsedObj.fileType = 'Component';
-					stackOfReg[file] = parsedObj;
-					resolve();
-				});
+var files = glob.sync([arguments.src])
+var promises = [];
+files.forEach(function(file) {
+	var promise = new Promise(function(resolve, reject) {
+	var data = fs.readFileSync(file);
+	var lines = data.toString().split('\n');
+	this.stack = [];
+	highland(lines)
+		.map(extractToken)
+		.each(buildTree.bind(this))
+		.done(function(){
+			var parsedObj = parseTree(this.stack);
+			stackOfReg[file] = parsedObj;
+			resolve();
 		});
-		promises.push(promise);
 	});
-	
-	Promise.all(promises).then(function() {
-		console.log(stackOfReg);
-	});
+	promises.push(promise);
+});
+
+Promise.all(promises).then(function() {
+	console.log(stackOfReg);
+});
